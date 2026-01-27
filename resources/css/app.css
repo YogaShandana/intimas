@@ -5,6 +5,17 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/* Prevent horizontal overflow on mobile */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+* {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
 /* Simple Scroll Animations */
 .fade-in-up {
     opacity: 0;
