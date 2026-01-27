@@ -1,7 +1,7 @@
 <style>
     #heroVideoHome {
-        visibility: visible !important;
-        opacity: 1 !important;
+        visibility: visible;
+        opacity: 1;
     }
     #heroVideoHome.loaded {
         visibility: visible;
@@ -72,14 +72,15 @@
     }
 </style>
 
-<section class="relative w-full h-[70vh] bg-gray-900 hero-section overflow-hidden" data-scroll-element style="background-image: url('/img/home/hero-fallback.jpg'); background-size: cover; background-position: center;">
+<section class="relative w-full h-[70vh] bg-gray-900 hero-section overflow-hidden" data-scroll-element>
     <!-- Background Video -->
     <video 
         autoplay 
         loop 
         muted 
         playsinline
-        preload="metadata"
+        preload="auto"
+        poster="{{ asset('img/home/video-poster.jpg') }}"
         class="w-full h-full object-cover pointer-events-none scale-effect fade-in-up"
         id="heroVideoHome"
         data-scroll-element
@@ -88,53 +89,31 @@
         Your browser does not support the video tag.
     </video>
     
-    <!-- Hero Content Overlay -->
-    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-        <div class="text-center text-white px-4">
-            <h1 class="text-4xl md:text-6xl font-bold mb-4 fade-in-up" data-scroll-element>INTIMAS</h1>
-            <p class="text-xl md:text-2xl mb-8 fade-in-up" data-scroll-element>Quality Seafood Products</p>
-        </div>
-    </div>
+</section>
     
 </section>
 
 <script>
     (function() {
         const video = document.getElementById('heroVideoHome');
-        let hasShown = false;
+        console.log('Video element found:', video);
         
-        function showVideo() {
-            if (!hasShown) {
-                hasShown = true;
-                // Use requestAnimationFrame to ensure smooth transition
-                requestAnimationFrame(function() {
-                    video.classList.add('loaded');
-                });
-            }
-        }
+        // Ensure video is visible immediately
+        video.style.visibility = 'visible';
+        video.style.opacity = '1';
         
-        // Show video when it can play through without buffering
-        video.addEventListener('canplaythrough', showVideo, { once: true });
-        
-        // Fallback 1: Show when enough data is loaded
-        video.addEventListener('canplay', function() {
-            if (!hasShown) {
-                setTimeout(showVideo, 150);
-            }
-        }, { once: true });
-        
-        // Fallback 2: Force show after delay
-        setTimeout(function() {
-            if (!hasShown) {
-                showVideo();
-            }
-        }, 1500);
-        
-        // Start playing
-        video.play().catch(function(error) {
-            console.error('Play failed:', error);
-            showVideo(); // Show even if play fails
+        // Try to play video
+        video.play().then(function() {
+            console.log('Video playing successfully');
+        }).catch(function(error) {
+            console.error('Video play failed:', error);
         });
+        
+        // Listen for various video events for debugging
+        video.addEventListener('loadstart', () => console.log('Video: loadstart'));
+        video.addEventListener('loadeddata', () => console.log('Video: loadeddata'));
+        video.addEventListener('canplay', () => console.log('Video: canplay'));
+        video.addEventListener('error', (e) => console.error('Video error:', e));
     })();
 
     // Scroll Effects Implementation
