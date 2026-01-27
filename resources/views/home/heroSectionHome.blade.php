@@ -23,28 +23,21 @@
     
     /* Hero section sticky effect */
     .hero-section {
-        position: sticky;
-        top: 0;
+        position: relative;
         z-index: 1;
     }
     
-    /* Sections overlay effect */
+    /* Sections after hero */
     .hero-section ~ section,
     .hero-section ~ footer {
         position: relative;
-        z-index: 10;
+        z-index: 2;
         background: white;
     }
     
     /* Footer specific styling */
     footer {
         background: #1a1a1a !important;
-    }
-    
-    /* First section after hero gets negative margin */
-    .hero-section + section {
-        margin-top: -10vh;
-        padding-top: 10vh;
     }
     
     /* Fade in from bottom effect */

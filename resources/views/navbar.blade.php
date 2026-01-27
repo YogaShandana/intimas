@@ -1,8 +1,8 @@
 <style>
     #main-navbar {
-        visibility: hidden;
-        opacity: 0;
-        transition: opacity 0.5s ease-in, background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        visibility: visible;
+        opacity: 1;
+        transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     }
     #main-navbar.loaded {
         visibility: visible;
