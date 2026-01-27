@@ -9,9 +9,8 @@
     
     /* Video styling */
     #heroVideoHome {
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.2s ease-in;
+        opacity: 1 !important;
+        visibility: visible !important;
         display: block !important;
         position: absolute !important;
         top: 0 !important;
@@ -19,11 +18,6 @@
         width: 100% !important;
         height: 100% !important;
         z-index: 1 !important;
-    }
-    
-    #heroVideoHome.loaded {
-        opacity: 1 !important;
-        visibility: visible !important;
     }
     
     /* Sections after hero */
@@ -62,21 +56,14 @@
         const video = document.getElementById('heroVideoHome');
         
         if (video) {
-            console.log('Hero video element found, initializing fade effect...');
+            console.log('Hero video element found, starting playback...');
             
-            function showVideo() {
-                video.classList.add('loaded');
-                console.log('Hero video fade-in applied');
-            }
-            
-            // Show video when ready to play
+            // Start playing immediately
             const playVideo = () => {
                 video.play().then(() => {
                     console.log('Hero video playing successfully');
-                    showVideo();
                 }).catch((error) => {
                     console.log('Video play error:', error);
-                    showVideo(); // Show even if play fails
                 });
             };
             
@@ -86,12 +73,8 @@
                 video.addEventListener('canplay', playVideo, { once: true });
             }
             
-            // Fallback: force show after delay
-            setTimeout(function() {
-                if (!video.classList.contains('loaded')) {
-                    showVideo();
-                }
-            }, 1500);
+            // Fallback
+            setTimeout(playVideo, 500);
         } else {
             console.error('Hero video element not found');
         }
