@@ -1,17 +1,21 @@
-<section class="content-home-3 relative h-[500px] flex items-center justify-center overflow-hidden">
+<section class="content-home-3 relative py-20 lg:py-32 flex items-center justify-center overflow-hidden">
     <!-- Background Image with Overlay -->
     <div class="absolute inset-0 z-0">
-        <img src="{{ asset('img/home/highStandard.png') }}" alt="High Standard Quality Control" class="w-full h-full object-cover">
-        <div class="absolute inset-0"></div>
+        <img src="{{ asset('img/home/highStandard.png') }}" 
+             alt="High Standard Quality Control" 
+             class="w-full h-full object-cover"
+             onerror="this.onerror=null; this.src='{{ url('img/home/highStandard.png') }}'; console.log('Image fallback used');"
+             onload="console.log('Image loaded successfully');">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
     </div>
 
     <!-- Content -->
-    <div class="container mx-auto px-4 relative z-10 text-center text-white">
-        <h2 class="text-3xl md:text-5xl font-bold mb-6 fade-in-up" data-aos="fade-down">
+    <div class="container mx-auto px-6 lg:px-8 relative z-10 text-center text-white max-w-4xl">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 fade-in-up leading-tight" data-aos="fade-down">
             High Standard in Quality Control
         </h2>
         
-        <p class="text-base md:text-lg font-light max-w-3xl mx-auto leading-relaxed fade-in-up animate-delay-300" data-aos="fade-up" data-aos-delay="200">
+        <p class="text-lg md:text-xl font-light leading-relaxed fade-in-up animate-delay-300" data-aos="fade-up" data-aos-delay="200">
             We apply strict quality control at every production stage to ensure each product meets international safety, 
             hygiene, and freshness standards.
         </p>
@@ -22,5 +26,31 @@
     .content-home-3 {
         /* Fallback background color */
         background-color: #2a3891;
+        min-height: 60vh;
+    }
+    
+    .content-home-3 .absolute.inset-0.z-0 img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+    
+    /* Enhanced text styling */
+    .content-home-3 h2 {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    .content-home-3 p {
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        line-height: 1.8;
+    }
+    
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+        .content-home-3 {
+            min-height: 50vh;
+        }
     }
 </style>
