@@ -1,41 +1,35 @@
 <style>
-    #heroVideoContact {
+    #heroImageContact {
         opacity: 0;
     }
-    #heroVideoContact.loaded {
+    #heroImageContact.loaded {
         opacity: 1;
         transition: opacity 0.5s ease-in;
     }
     
-    /* Hero section sticky effect */
+    /* Hero section */
     .hero-section {
-        position: sticky;
-        top: 0;
+        position: relative;
         z-index: 1;
     }
     
-    /* Sections overlay effect */
+    /* Sections after hero */
     .hero-section ~ section,
     .hero-section ~ footer {
         position: relative;
-        z-index: 10;
+        z-index: 2;
         background: white;
     }
     
     footer {
         background: #1a1a1a !important;
     }
-    
-    .hero-section + section {
-        margin-top: -10vh;
-        padding-top: 10vh;
-    }
 </style>
 
 <section class="relative w-full h-[70vh] bg-gray-900 hero-section overflow-hidden">
       <!-- Background Image -->
     <img 
-        src="{{ asset('img/contact/HeroContact.png') }}"
+        src="{{ asset('img/contact/heroContact.png') }}"
         alt="Contact Hero"
         class="w-full h-full object-cover pointer-events-none fade-in-up"
         id="heroImageContact"
@@ -44,35 +38,18 @@
 
 <script>
     (function() {
-        const video = document.getElementById('heroVideoContact');
-        let hasShown = false;
+        const image = document.getElementById('heroImageContact');
         
-        function showVideo() {
-            if (!hasShown) {
-                hasShown = true;
-                requestAnimationFrame(function() {
-                    video.classList.add('loaded');
-                });
+        if (image) {
+            // Show image with fade-in effect
+            image.addEventListener('load', function() {
+                image.classList.add('loaded');
+            });
+            
+            // If image is already loaded
+            if (image.complete) {
+                image.classList.add('loaded');
             }
         }
-        
-        video.addEventListener('canplaythrough', showVideo, { once: true });
-        
-        video.addEventListener('canplay', function() {
-            if (!hasShown) {
-                setTimeout(showVideo, 150);
-            }
-        }, { once: true });
-        
-        setTimeout(function() {
-            if (!hasShown) {
-                showVideo();
-            }
-        }, 1500);
-        
-        video.play().catch(function(error) {
-            console.error('Play failed:', error);
-            showVideo();
-        });
     })();
 </script>
