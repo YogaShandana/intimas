@@ -11,7 +11,7 @@
     #heroVideoHome {
         opacity: 0;
         visibility: hidden;
-        transition: opacity 0.4s ease-in;
+        transition: opacity 0.2s ease-in;
         display: block !important;
         position: absolute !important;
         top: 0 !important;
@@ -65,10 +65,8 @@
             console.log('Hero video element found, initializing fade effect...');
             
             function showVideo() {
-                setTimeout(function() {
-                    video.classList.add('loaded');
-                    console.log('Hero video fade-in applied');
-                }, 100);
+                video.classList.add('loaded');
+                console.log('Hero video fade-in applied');
             }
             
             // Show video when ready to play
