@@ -23,3 +23,23 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Allow access to media files
+<FilesMatch "\.(mp4|webm|ogg|avi|mov|wmv|flv|mkv|m4v|jpg|jpeg|png|gif|svg|css|js|pdf|doc|docx)$">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Allow from all
+    </IfModule>
+</FilesMatch>
+
+# Set proper MIME types for video files
+<IfModule mod_mime.c>
+    AddType video/mp4 .mp4
+    AddType video/webm .webm
+    AddType video/ogg .ogg
+    AddType video/x-msvideo .avi
+    AddType video/quicktime .mov
+</IfModule>

@@ -85,12 +85,15 @@
         style="display: block; position: absolute; top: 0; left: 0; z-index: 1;"
     >
         <source src="{{ asset('video/v.mp4') }}" type="video/mp4">
+        <source src="{{ url('/video/v.mp4') }}" type="video/mp4">
         Video not supported
     </video>
     
     <!-- Debug Info (remove after fixing) -->
     <div id="debug-info" style="position: absolute; top: 10px; left: 10px; color: white; background: rgba(0,0,0,0.7); padding: 10px; z-index: 100; font-size: 12px;">
-        Video path: {{ asset('video/v.mp4') }}
+        Video paths:<br>
+        1. {{ asset('video/v.mp4') }}<br>
+        2. {{ url('/video/v.mp4') }}
     </div>
     
 </section>
@@ -104,24 +107,22 @@ document.addEventListener('DOMContentLoaded', function() {
     if (video) {
         console.log('🎬 Video element found');
         
-        // Test if video file exists
-        const videoSrc = '{{ asset('video/v.mp4') }}';
-        console.log('📍 Video source:', videoSrc);
+        // Test both video sources
+        const videoSrc1 = '{{ asset('video/v.mp4') }}';
+        const videoSrc2 = '{{ url('/video/v.mp4') }}';
         
-        // Test video file accessibility
-        fetch(videoSrc, { method: 'HEAD' })
-            .then(response => {
-                if (response.ok) {
-                    console.log('✅ Video file accessible, size:', response.headers.get('Content-Length'));
-                    console.log('📄 Content-Type:', response.headers.get('Content-Type'));
-                } else {
-                    console.error('❌ Video file not accessible. Status:', response.status);
-                    console.error('Response:', response);
-                }
-            })
-            .catch(error => {
-                console.error('❌ Error checking video file:', error);
-            });
+        console.log('📍 Testing video sources:');
+        console.log('1. Asset URL:', videoSrc1);
+        console.log('2. Route URL:', videoSrc2);
+        
+        // Test both paths
+        Promise.all([
+            fetch(videoSrc1, { method: 'HEAD' }).catch(e => ({ ok: false, status: 'error', error: e })),
+            fetch(videoSrc2, { method: 'HEAD' }).catch(e => ({ ok: false, status: 'error', error: e }))
+        ]).then(responses => {
+            console.log('📊 Asset URL result:', responses[0].ok ? '✅ OK' : `❌ ${responses[0].status}`);
+            console.log('📊 Route URL result:', responses[1].ok ? '✅ OK' : `❌ ${responses[1].status}`);
+        });
         
         // Force video display
         video.style.display = 'block';
