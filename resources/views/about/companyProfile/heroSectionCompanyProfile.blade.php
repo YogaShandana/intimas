@@ -1,34 +1,40 @@
 <style>
-    #heroVideoCompanyProfile {
+    #heroImageCompanyProfile {
         opacity: 0;
     }
-    #heroVideoCompanyProfile.loaded {
+    #heroImageCompanyProfile.loaded {
         opacity: 1;
         transition: opacity 0.5s ease-in;
     }
     
-    /* Hero section sticky effect */
+    /* Hero section */
     .hero-section {
-        position: sticky;
-        top: 0;
+        position: static;
         z-index: 1;
     }
     
-    /* Sections overlay effect */
+    /* Ensure normal document flow */
     .hero-section ~ section,
     .hero-section ~ footer {
-        position: relative;
-        z-index: 10;
+        position: static;
         background: white;
+        z-index: auto;
     }
     
     footer {
         background: #1a1a1a !important;
     }
     
-    .hero-section + section {
-        margin-top: -10vh;
-        padding-top: 10vh;
+    /* Fade effects */
+    .fade-in-up {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease-out;
+    }
+    
+    .fade-in-up.loaded {
+        opacity: 1;
+        transform: translateY(0);
     }
 </style>
 
@@ -45,35 +51,18 @@
 
 <script>
     (function() {
-        const video = document.getElementById('heroVideoCompanyProfile');
-        let hasShown = false;
+        const image = document.getElementById('heroImageCompanyProfile');
         
-        function showVideo() {
-            if (!hasShown) {
-                hasShown = true;
-                requestAnimationFrame(function() {
-                    video.classList.add('loaded');
-                });
+        if (image) {
+            // Show image with fade-in effect
+            image.addEventListener('load', function() {
+                image.classList.add('loaded');
+            });
+            
+            // If image is already loaded
+            if (image.complete) {
+                image.classList.add('loaded');
             }
         }
-        
-        video.addEventListener('canplaythrough', showVideo, { once: true });
-        
-        video.addEventListener('canplay', function() {
-            if (!hasShown) {
-                setTimeout(showVideo, 150);
-            }
-        }, { once: true });
-        
-        setTimeout(function() {
-            if (!hasShown) {
-                showVideo();
-            }
-        }, 1500);
-        
-        video.play().catch(function(error) {
-            console.error('Play failed:', error);
-            showVideo();
-        });
     })();
 </script>
