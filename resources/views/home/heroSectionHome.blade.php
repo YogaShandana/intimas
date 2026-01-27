@@ -86,15 +86,8 @@
     >
         <source src="{{ asset('video/v.mp4') }}" type="video/mp4">
         <source src="{{ url('/video/v.mp4') }}" type="video/mp4">
-        Video not supported
+        Your browser does not support the video tag.
     </video>
-    
-    <!-- Debug Info (remove after fixing) -->
-    <div id="debug-info" style="position: absolute; top: 10px; left: 10px; color: white; background: rgba(0,0,0,0.7); padding: 10px; z-index: 100; font-size: 12px;">
-        Video paths:<br>
-        1. {{ asset('video/v.mp4') }}<br>
-        2. {{ url('/video/v.mp4') }}
-    </div>
     
 </section>
     
@@ -105,25 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('heroVideoHome');
     
     if (video) {
-        console.log('🎬 Video element found');
-        
-        // Test both video sources
-        const videoSrc1 = '{{ asset('video/v.mp4') }}';
-        const videoSrc2 = '{{ url('/video/v.mp4') }}';
-        
-        console.log('📍 Testing video sources:');
-        console.log('1. Asset URL:', videoSrc1);
-        console.log('2. Route URL:', videoSrc2);
-        
-        // Test both paths
-        Promise.all([
-            fetch(videoSrc1, { method: 'HEAD' }).catch(e => ({ ok: false, status: 'error', error: e })),
-            fetch(videoSrc2, { method: 'HEAD' }).catch(e => ({ ok: false, status: 'error', error: e }))
-        ]).then(responses => {
-            console.log('📊 Asset URL result:', responses[0].ok ? '✅ OK' : `❌ ${responses[0].status}`);
-            console.log('📊 Route URL result:', responses[1].ok ? '✅ OK' : `❌ ${responses[1].status}`);
-        });
-        
         // Force video display
         video.style.display = 'block';
         video.style.position = 'absolute';
@@ -132,43 +106,22 @@ document.addEventListener('DOMContentLoaded', function() {
         video.style.width = '100%';
         video.style.height = '100%';
         video.style.objectFit = 'cover';
-        video.style.zIndex = '10';
-        video.style.backgroundColor = 'black';
+        video.style.zIndex = '1';
         
-        // Set all video properties
+        // Set video properties
         video.muted = true;
         video.loop = true;
         video.autoplay = true;
         video.playsInline = true;
         
-        // Comprehensive event logging
-        video.addEventListener('loadstart', () => console.log('🔄 Video: Load started'));
-        video.addEventListener('durationchange', () => console.log('⏱️ Video: Duration =', video.duration));
-        video.addEventListener('loadedmetadata', () => console.log('📊 Video: Metadata loaded'));
+        // Load and play video
         video.addEventListener('loadeddata', () => {
-            console.log('📥 Video: Data loaded');
-            console.log('📐 Video dimensions:', video.videoWidth, 'x', video.videoHeight);
-            video.play().then(() => {
-                console.log('▶️ Video: Playing successfully');
-            }).catch(error => {
-                console.error('❌ Video play failed:', error);
+            video.play().catch(() => {
+                // Silent fail - video will try to autoplay
             });
         });
-        video.addEventListener('canplay', () => console.log('✅ Video: Can play'));
-        video.addEventListener('canplaythrough', () => console.log('✅ Video: Can play through'));
-        video.addEventListener('playing', () => console.log('🎬 Video: Is playing'));
-        video.addEventListener('pause', () => console.log('⏸️ Video: Paused'));
-        video.addEventListener('error', (e) => {
-            console.error('❌ Video error:', e);
-            console.error('Error code:', video.error?.code);
-            console.error('Error message:', video.error?.message);
-        });
         
-        // Force load
         video.load();
-        
-    } else {
-        console.error('❌ Video element not found');
     }
 });
 
