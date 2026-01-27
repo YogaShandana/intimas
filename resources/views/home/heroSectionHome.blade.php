@@ -11,7 +11,7 @@
     #heroVideoHome {
         opacity: 0;
         visibility: hidden;
-        transition: opacity 0.8s ease-in;
+        transition: opacity 0.4s ease-in;
         display: block !important;
         position: absolute !important;
         top: 0 !important;
@@ -68,7 +68,7 @@
                 setTimeout(function() {
                     video.classList.add('loaded');
                     console.log('Hero video fade-in applied');
-                }, 200);
+                }, 100);
             }
             
             // Show video when ready to play
