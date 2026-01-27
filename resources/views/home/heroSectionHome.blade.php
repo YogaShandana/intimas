@@ -72,18 +72,17 @@
     }
 </style>
 
-<section class="relative w-full h-[70vh] bg-gray-900 hero-section overflow-hidden" data-scroll-element>
+<section class="relative w-full h-[70vh] bg-gray-900 hero-section overflow-hidden" data-scroll-element style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ asset('img/home/highStandard.png') }}'); background-size: cover; background-position: center;">
     <!-- Background Video -->
     <video 
         autoplay 
         loop 
         muted 
         playsinline
-        preload="auto"
-        poster="{{ asset('img/home/video-poster.jpg') }}"
-        class="w-full h-full object-cover pointer-events-none scale-effect fade-in-up"
+        preload="none"
+        class="w-full h-full object-cover pointer-events-none"
         id="heroVideoHome"
-        data-scroll-element
+        style="position: absolute; top: 0; left: 0; z-index: 1;"
     >
         <source src="{{ asset('video/v.mp4') }}" type="video/mp4">
         Your browser does not support the video tag.
@@ -94,27 +93,62 @@
 </section>
 
 <script>
-    (function() {
-        const video = document.getElementById('heroVideoHome');
-        console.log('Video element found:', video);
+document.addEventListener('DOMContentLoaded', function() {
+    const video = document.getElementById('heroVideoHome');
+    const section = video.closest('section');
+    
+    if (video && section) {
+        // Function to show video when it's ready
+        function showVideo() {
+            video.style.display = 'block';
+            video.style.opacity = '1';
+            console.log('Video is now visible');
+        }
         
-        // Ensure video is visible immediately
-        video.style.visibility = 'visible';
-        video.style.opacity = '1';
+        // Function to hide video if it fails
+        function hideVideo() {
+            video.style.display = 'none';
+            console.log('Video hidden, showing background image');
+        }
         
-        // Try to play video
-        video.play().then(function() {
-            console.log('Video playing successfully');
-        }).catch(function(error) {
-            console.error('Video play failed:', error);
+        // Initially hide video
+        video.style.opacity = '0';
+        video.style.transition = 'opacity 1s ease-in-out';
+        
+        // Try to load and play video
+        video.addEventListener('canplay', function() {
+            console.log('Video can play');
+            showVideo();
         });
         
-        // Listen for various video events for debugging
-        video.addEventListener('loadstart', () => console.log('Video: loadstart'));
-        video.addEventListener('loadeddata', () => console.log('Video: loadeddata'));
-        video.addEventListener('canplay', () => console.log('Video: canplay'));
-        video.addEventListener('error', (e) => console.error('Video error:', e));
-    })();
+        video.addEventListener('loadeddata', function() {
+            console.log('Video data loaded');
+            video.play().then(() => {
+                console.log('Video playing successfully');
+                showVideo();
+            }).catch((error) => {
+                console.error('Video play failed:', error);
+                hideVideo();
+            });
+        });
+        
+        video.addEventListener('error', function(e) {
+            console.error('Video error:', e);
+            hideVideo();
+        });
+        
+        // Fallback: if video doesn't load within 3 seconds, hide it
+        setTimeout(() => {
+            if (video.style.opacity === '0') {
+                console.log('Video timeout, showing background');
+                hideVideo();
+            }
+        }, 3000);
+        
+        // Load the video
+        video.load();
+    }
+});
 
     // Scroll Effects Implementation
     (function() {
