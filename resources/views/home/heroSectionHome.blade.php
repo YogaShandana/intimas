@@ -79,12 +79,13 @@
         loop 
         muted 
         playsinline
-        preload="none"
+        preload="metadata"
         class="w-full h-full object-cover pointer-events-none"
         id="heroVideoHome"
-        style="position: absolute; top: 0; left: 0; z-index: 1;"
+        style="position: absolute; top: 0; left: 0; z-index: 2; display: block;"
     >
         <source src="{{ asset('video/v.mp4') }}" type="video/mp4">
+        <source src="/video/v.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
     
@@ -95,58 +96,68 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('heroVideoHome');
-    const section = video.closest('section');
     
-    if (video && section) {
-        // Function to show video when it's ready
-        function showVideo() {
-            video.style.display = 'block';
-            video.style.opacity = '1';
-            console.log('Video is now visible');
+    if (video) {
+        console.log('Video element found');
+        console.log('Video src:', video.querySelector('source').src);
+        
+        // Check if mobile device
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        
+        if (isMobile) {
+            console.log('Mobile device detected - video may not autoplay');
         }
         
-        // Function to hide video if it fails
-        function hideVideo() {
-            video.style.display = 'none';
-            console.log('Video hidden, showing background image');
-        }
+        // Force video to be visible immediately
+        video.style.display = 'block';
+        video.style.opacity = '1';
+        video.style.visibility = 'visible';
         
-        // Initially hide video
-        video.style.opacity = '0';
-        video.style.transition = 'opacity 1s ease-in-out';
+        // Set video properties
+        video.muted = true;
+        video.loop = true;
+        video.autoplay = true;
+        video.playsInline = true;
         
-        // Try to load and play video
-        video.addEventListener('canplay', function() {
-            console.log('Video can play');
-            showVideo();
+        // Multiple event listeners
+        video.addEventListener('loadstart', () => console.log('Video: Load started'));
+        video.addEventListener('loadedmetadata', () => console.log('Video: Metadata loaded'));
+        video.addEventListener('loadeddata', () => console.log('Video: Data loaded'));
+        video.addEventListener('canplay', () => {
+            console.log('Video: Can play');
+            playVideo();
         });
+        video.addEventListener('canplaythrough', () => console.log('Video: Can play through'));
+        video.addEventListener('error', (e) => console.error('Video error:', e));
         
-        video.addEventListener('loadeddata', function() {
-            console.log('Video data loaded');
+        function playVideo() {
             video.play().then(() => {
-                console.log('Video playing successfully');
-                showVideo();
+                console.log('✅ Video playing successfully');
             }).catch((error) => {
-                console.error('Video play failed:', error);
-                hideVideo();
+                console.error('❌ Video play failed:', error);
+                
+                // If autoplay fails, try user interaction
+                document.addEventListener('click', function playOnClick() {
+                    video.play().then(() => {
+                        console.log('✅ Video playing after user interaction');
+                        document.removeEventListener('click', playOnClick);
+                    }).catch(console.error);
+                }, { once: true });
             });
-        });
+        }
         
-        video.addEventListener('error', function(e) {
-            console.error('Video error:', e);
-            hideVideo();
-        });
+        // Start loading
+        video.load();
         
-        // Fallback: if video doesn't load within 3 seconds, hide it
+        // Force play attempt after delay
         setTimeout(() => {
-            if (video.style.opacity === '0') {
-                console.log('Video timeout, showing background');
-                hideVideo();
+            if (video.paused) {
+                console.log('🔄 Retry playing video');
+                playVideo();
             }
         }, 3000);
-        
-        // Load the video
-        video.load();
+    } else {
+        console.error('❌ Video element not found');
     }
 });
 
