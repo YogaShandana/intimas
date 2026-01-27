@@ -35,7 +35,7 @@
 <section class="relative w-full h-[70vh] bg-gray-900 hero-section overflow-hidden">
       <!-- Background Image -->
     <img 
-        src="{{ asset('img/gallery/HeroGallery.png') }}"
+        src="{{ asset('img/gallery/heroGallery.png') }}"
         alt="Gallery Hero"
         class="w-full h-full object-cover pointer-events-none fade-in-up"
         id="heroImageGallery"
@@ -45,35 +45,18 @@
 
 <script>
     (function() {
-        const video = document.getElementById('heroVideoGallery');
-        let hasShown = false;
+        const image = document.getElementById('heroImageGallery');
         
-        function showVideo() {
-            if (!hasShown) {
-                hasShown = true;
-                requestAnimationFrame(function() {
-                    video.classList.add('loaded');
-                });
+        if (image) {
+            // Show image with fade-in effect
+            image.addEventListener('load', function() {
+                image.style.opacity = '1';
+            });
+            
+            // If image is already loaded
+            if (image.complete) {
+                image.style.opacity = '1';
             }
         }
-        
-        video.addEventListener('canplaythrough', showVideo, { once: true });
-        
-        video.addEventListener('canplay', function() {
-            if (!hasShown) {
-                setTimeout(showVideo, 150);
-            }
-        }, { once: true });
-        
-        setTimeout(function() {
-            if (!hasShown) {
-                showVideo();
-            }
-        }, 1500);
-        
-        video.play().catch(function(error) {
-            console.error('Play failed:', error);
-            showVideo();
-        });
     })();
 </script>

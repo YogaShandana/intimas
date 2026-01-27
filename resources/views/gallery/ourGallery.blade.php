@@ -89,7 +89,7 @@
                     delay: 3000,
                     disableOnInteraction: false,
                 },
-                loop: true,
+                loop: false,
             });
         });
     </script>
