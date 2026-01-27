@@ -7,28 +7,22 @@
         transition: opacity 0.5s ease-in;
     }
     
-    /* Hero section sticky effect */
+    /* Hero section */
     .hero-section {
-        position: sticky;
-        top: 0;
+        position: static;
         z-index: 1;
     }
     
-    /* Sections overlay effect */
+    /* Ensure normal document flow */
     .hero-section ~ section,
     .hero-section ~ footer {
-        position: relative;
-        z-index: 10;
+        position: static;
         background: white;
+        z-index: auto;
     }
     
     footer {
         background: #1a1a1a !important;
-    }
-    
-    .hero-section + section {
-        margin-top: -10vh;
-        padding-top: 10vh;
     }
 </style>
 

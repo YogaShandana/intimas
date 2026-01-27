@@ -9,16 +9,16 @@
     
     /* Hero section */
     .hero-section {
-        position: relative;
+        position: static;
         z-index: 1;
     }
     
-    /* Sections after hero */
+    /* Ensure normal document flow */
     .hero-section ~ section,
     .hero-section ~ footer {
-        position: relative;
-        z-index: 2;
+        position: static;
         background: white;
+        z-index: auto;
     }
     
     footer {

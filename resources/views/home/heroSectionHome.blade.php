@@ -21,18 +21,18 @@
         opacity: 1;
     }
     
-    /* Hero section sticky effect */
+    /* Hero section */
     .hero-section {
-        position: relative;
+        position: static;
         z-index: 1;
     }
     
-    /* Sections after hero */
+    /* Ensure normal document flow */
     .hero-section ~ section,
     .hero-section ~ footer {
-        position: relative;
-        z-index: 2;
+        position: static;
         background: white;
+        z-index: auto;
     }
     
     /* Footer specific styling */
@@ -75,7 +75,6 @@
         playsinline
         preload="auto"
         class="w-full h-full object-cover"
-        style="display: block; position: absolute; top: 0; left: 0; z-index: 1;"
     >
         <source src="{{ asset('video/v.mp4') }}" type="video/mp4">
         <source src="{{ url('/video/v.mp4') }}" type="video/mp4">
@@ -91,16 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('heroVideoHome');
     
     if (video) {
-        // Force video display
-        video.style.display = 'block';
-        video.style.position = 'absolute';
-        video.style.top = '0';
-        video.style.left = '0';
-        video.style.width = '100%';
-        video.style.height = '100%';
-        video.style.objectFit = 'cover';
-        video.style.zIndex = '1';
-        
         // Set video properties
         video.muted = true;
         video.loop = true;
