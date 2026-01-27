@@ -50,19 +50,25 @@
 </section>
 
 <script>
-    (function() {
+    document.addEventListener('DOMContentLoaded', function() {
         const image = document.getElementById('heroImageGallery');
         
         if (image) {
-            // Show image with fade-in effect
-            image.addEventListener('load', function() {
-                image.classList.add('loaded');
-            });
-            
-            // If image is already loaded
-            if (image.complete) {
-                image.classList.add('loaded');
+            function showImage() {
+                setTimeout(function() {
+                    image.classList.add('loaded');
+                }, 100);
             }
+            
+            // Show image with fade-in effect
+            if (image.complete) {
+                showImage();
+            } else {
+                image.addEventListener('load', showImage);
+            }
+            
+            // Fallback: force show after delay
+            setTimeout(showImage, 1000);
         }
-    })();
+    });
 </script>
