@@ -72,22 +72,26 @@
     }
 </style>
 
-<section class="relative w-full h-[70vh] bg-gray-900 hero-section overflow-hidden" data-scroll-element style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ asset('img/home/highStandard.png') }}'); background-size: cover; background-position: center;">
+<section class="relative w-full h-[70vh] bg-black hero-section overflow-hidden" data-scroll-element>
     <!-- Background Video -->
     <video 
+        id="heroVideoHome"
         autoplay 
         loop 
         muted 
         playsinline
-        preload="metadata"
-        class="w-full h-full object-cover pointer-events-none"
-        id="heroVideoHome"
-        style="position: absolute; top: 0; left: 0; z-index: 2; display: block;"
+        preload="auto"
+        class="w-full h-full object-cover"
+        style="display: block; position: absolute; top: 0; left: 0; z-index: 1;"
     >
         <source src="{{ asset('video/v.mp4') }}" type="video/mp4">
-        <source src="/video/v.mp4" type="video/mp4">
-        Your browser does not support the video tag.
+        Video not supported
     </video>
+    
+    <!-- Debug Info (remove after fixing) -->
+    <div id="debug-info" style="position: absolute; top: 10px; left: 10px; color: white; background: rgba(0,0,0,0.7); padding: 10px; z-index: 100; font-size: 12px;">
+        Video path: {{ asset('video/v.mp4') }}
+    </div>
     
 </section>
     
@@ -98,64 +102,70 @@ document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('heroVideoHome');
     
     if (video) {
-        console.log('Video element found');
-        console.log('Video src:', video.querySelector('source').src);
+        console.log('🎬 Video element found');
         
-        // Check if mobile device
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        // Test if video file exists
+        const videoSrc = '{{ asset('video/v.mp4') }}';
+        console.log('📍 Video source:', videoSrc);
         
-        if (isMobile) {
-            console.log('Mobile device detected - video may not autoplay');
-        }
+        // Test video file accessibility
+        fetch(videoSrc, { method: 'HEAD' })
+            .then(response => {
+                if (response.ok) {
+                    console.log('✅ Video file accessible, size:', response.headers.get('Content-Length'));
+                    console.log('📄 Content-Type:', response.headers.get('Content-Type'));
+                } else {
+                    console.error('❌ Video file not accessible. Status:', response.status);
+                    console.error('Response:', response);
+                }
+            })
+            .catch(error => {
+                console.error('❌ Error checking video file:', error);
+            });
         
-        // Force video to be visible immediately
+        // Force video display
         video.style.display = 'block';
-        video.style.opacity = '1';
-        video.style.visibility = 'visible';
+        video.style.position = 'absolute';
+        video.style.top = '0';
+        video.style.left = '0';
+        video.style.width = '100%';
+        video.style.height = '100%';
+        video.style.objectFit = 'cover';
+        video.style.zIndex = '10';
+        video.style.backgroundColor = 'black';
         
-        // Set video properties
+        // Set all video properties
         video.muted = true;
         video.loop = true;
         video.autoplay = true;
         video.playsInline = true;
         
-        // Multiple event listeners
-        video.addEventListener('loadstart', () => console.log('Video: Load started'));
-        video.addEventListener('loadedmetadata', () => console.log('Video: Metadata loaded'));
-        video.addEventListener('loadeddata', () => console.log('Video: Data loaded'));
-        video.addEventListener('canplay', () => {
-            console.log('Video: Can play');
-            playVideo();
-        });
-        video.addEventListener('canplaythrough', () => console.log('Video: Can play through'));
-        video.addEventListener('error', (e) => console.error('Video error:', e));
-        
-        function playVideo() {
+        // Comprehensive event logging
+        video.addEventListener('loadstart', () => console.log('🔄 Video: Load started'));
+        video.addEventListener('durationchange', () => console.log('⏱️ Video: Duration =', video.duration));
+        video.addEventListener('loadedmetadata', () => console.log('📊 Video: Metadata loaded'));
+        video.addEventListener('loadeddata', () => {
+            console.log('📥 Video: Data loaded');
+            console.log('📐 Video dimensions:', video.videoWidth, 'x', video.videoHeight);
             video.play().then(() => {
-                console.log('✅ Video playing successfully');
-            }).catch((error) => {
+                console.log('▶️ Video: Playing successfully');
+            }).catch(error => {
                 console.error('❌ Video play failed:', error);
-                
-                // If autoplay fails, try user interaction
-                document.addEventListener('click', function playOnClick() {
-                    video.play().then(() => {
-                        console.log('✅ Video playing after user interaction');
-                        document.removeEventListener('click', playOnClick);
-                    }).catch(console.error);
-                }, { once: true });
             });
-        }
+        });
+        video.addEventListener('canplay', () => console.log('✅ Video: Can play'));
+        video.addEventListener('canplaythrough', () => console.log('✅ Video: Can play through'));
+        video.addEventListener('playing', () => console.log('🎬 Video: Is playing'));
+        video.addEventListener('pause', () => console.log('⏸️ Video: Paused'));
+        video.addEventListener('error', (e) => {
+            console.error('❌ Video error:', e);
+            console.error('Error code:', video.error?.code);
+            console.error('Error message:', video.error?.message);
+        });
         
-        // Start loading
+        // Force load
         video.load();
         
-        // Force play attempt after delay
-        setTimeout(() => {
-            if (video.paused) {
-                console.log('🔄 Retry playing video');
-                playVideo();
-            }
-        }, 3000);
     } else {
         console.error('❌ Video element not found');
     }
