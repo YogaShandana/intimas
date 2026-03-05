@@ -63,8 +63,11 @@
                         <a href="/about/company-profile" class="block {{ request()->is('about/company-profile') ? 'bg-white text-[#2E3192]' : 'text-white hover:bg-[#3d4ab5]' }} text-center text-sm py-2 px-4 rounded-full mb-3 transition-colors">
                             COMPANY PROFILE
                         </a>
-                        <a href="/about/sustainability" class="block {{ request()->is('about/sustainability') ? 'bg-white text-[#2E3192]' : 'text-white hover:bg-[#3d4ab5]' }} text-center text-sm py-2 px-4 rounded-full transition-colors">
+                        <a href="/about/sustainability" class="block {{ request()->is('about/sustainability') ? 'bg-white text-[#2E3192]' : 'text-white hover:bg-[#3d4ab5]' }} text-center text-sm py-2 px-4 rounded-full mb-3 transition-colors">
                             SUSTAINABILITY
+                        </a>
+                        <a href="/about/code-of-conduct" class="block {{ request()->is('about/code-of-conduct') ? 'bg-white text-[#2E3192]' : 'text-white hover:bg-[#3d4ab5]' }} text-center text-sm py-2 px-4 rounded-full transition-colors">
+                            CODE OF CONDUCT
                         </a>
                     </div>
                 </div>
@@ -88,6 +91,7 @@
                     <div id="mobile-about-dropdown" class="hidden bg-gray-50">
                         <a href="/about/company-profile" class="block px-10 py-4 hover:bg-gray-100 {{ request()->is('about/company-profile') ? 'bg-blue-100 font-semibold' : '' }} transition-colors border-l-4 {{ request()->is('about/company-profile') ? 'border-[#2E3192]' : 'border-transparent' }}">Company Profile</a>
                         <a href="/about/sustainability" class="block px-10 py-4 hover:bg-gray-100 {{ request()->is('about/sustainability') ? 'bg-blue-100 font-semibold' : '' }} transition-colors border-l-4 {{ request()->is('about/sustainability') ? 'border-[#2E3192]' : 'border-transparent' }}">Sustainability</a>
+                        <a href="/about/code-of-conduct" class="block px-10 py-4 hover:bg-gray-100 {{ request()->is('about/code-of-conduct') ? 'bg-blue-100 font-semibold' : '' }} transition-colors border-l-4 {{ request()->is('about/code-of-conduct') ? 'border-[#2E3192]' : 'border-transparent' }}">Code of Conduct</a>
                     </div>
                 </div>
                 <a href="/product" class="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 {{ request()->is('product*') ? 'bg-blue-50 font-semibold' : '' }} transition-colors">OUR PRODUCT</a>

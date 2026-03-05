@@ -29,6 +29,10 @@ Route::get('/about/sustainability', function () {
     return view('about.sustainability');
 });
 
+Route::get('/about/code-of-conduct', function () {
+    return view('about.codeOfConduct');
+});
+
 Route::get('/product', function () {
     return view('ourProduct.ourProduct');
 });

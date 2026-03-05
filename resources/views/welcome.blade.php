@@ -13,6 +13,7 @@
   <body>
     @include('navbar')
     @include('home.heroSectionHome')
+    @include('home.codeOfConduct')
     @include('home.qualitySeafood')
     @include('home.highStandard')
     @include('home.contact')
